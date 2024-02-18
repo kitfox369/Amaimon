@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shop xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<shop>
+		<npc_idx>0</npc_idx>
+		<comment>안녕하세요.
+아스카나 마을의 잡화상점입니다.</comment>
+		<reply_ment>훌륭한 선택이군요.</reply_ment>
+		<shop_kind>0</shop_kind>
+		<itm_list>0,1</itm_list>
+		<cost_list>50,100</cost_list>
+	</shop>
+	<shop>
+		<npc_idx>1</npc_idx>
+		<comment>안녕하세요</comment>
+		<reply_ment>훌륭한 선택이군요.</reply_ment>
+		<shop_kind>0</shop_kind>
+		<itm_list>0,1</itm_list>
+		<cost_list>50,100</cost_list>
+	</shop>
+	<shop>
+		<npc_idx>2</npc_idx>
+		<comment>안녕하세요</comment>
+		<reply_ment>훌륭한 선택이군요.</reply_ment>
+		<shop_kind>0</shop_kind>
+		<itm_list>0,1</itm_list>
+		<cost_list>50,100</cost_list>
+	</shop>
+	<shop>
+		<npc_idx>3</npc_idx>
+		<comment>안녕하세요</comment>
+		<reply_ment>훌륭한 선택이군요.</reply_ment>
+		<shop_kind>0</shop_kind>
+		<itm_list>0,1</itm_list>
+		<cost_list>50,100</cost_list>
+	</shop>
+	<shop>
+		<npc_idx>4</npc_idx>
+		<comment>안녕하세요</comment>
+		<reply_ment>훌륭한 선택이군요.</reply_ment>
+		<shop_kind>0</shop_kind>
+		<itm_list>0,1</itm_list>
+		<cost_list>50,100</cost_list>
+	</shop>
+</shop>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<npc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<npc>
+		<npc_idx>0</npc_idx>
+		<npc_name>코디</npc_name>
+	</npc>
+	<npc>
+		<npc_idx>1</npc_idx>
+		<npc_name>드웬</npc_name>
+	</npc>
+</npc>

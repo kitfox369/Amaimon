@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<quest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<quest>
+		<quest_idx>0</quest_idx>
+		<npc_idx>0</npc_idx>
+		<quest_txt>&lt;color=#F6ED00&gt;닭장&lt;/color&gt;에서 &lt;color=#9BBFEA&gt;닭&lt;/color&gt; 잡기</quest_txt>
+		<content>안녕하세요.
+닭 좀 잡아주실수 있나요?</content>
+		<hint_ment>오른쪽으로 가보면 닭장이 있을걸세.</hint_ment>
+		<finish_ment>고맙네. 
+사례는 여기있네.</finish_ment>
+		<kind>1</kind>
+		<main>Y</main>
+		<repeat>N</repeat>
+		<prequest>0</prequest>
+		<monster_kind>0</monster_kind>
+		<monster_idx>0</monster_idx>
+		<monster_num>3</monster_num>
+		<reward_money>100</reward_money>
+		<reward_item>0</reward_item>
+		<reward_item_num>2</reward_item_num>
+	</quest>
+	<quest>
+		<quest_idx>1</quest_idx>
+		<npc_idx>0</npc_idx>
+		<quest_txt>&lt;color=#F6ED00&gt;스노우필드&lt;/color&gt;에서 &lt;color=#9BBFEA&gt;늑대&lt;/color&gt; 잡기</quest_txt>
+		<content>안녕하세요.
+늑대 좀 잡아주실수 있나요?</content>
+		<hint_ment>스노우필드는 아스카나 마을에서 아래로 가면 있을거라네.</hint_ment>
+		<finish_ment>어려웠을텐데. 
+고맙네.</finish_ment>
+		<kind>1</kind>
+		<main>Y</main>
+		<repeat>N</repeat>
+		<prequest>1</prequest>
+		<monster_kind>0</monster_kind>
+		<monster_idx>1</monster_idx>
+		<monster_num>3</monster_num>
+		<reward_money>100</reward_money>
+		<reward_item>0</reward_item>
+		<reward_item_num>2</reward_item_num>
+	</quest>
+	<quest>
+		<quest_idx>2</quest_idx>
+		<npc_idx>1</npc_idx>
+		<quest_txt>&lt;color=#F6ED00&gt;닭장&lt;/color&gt;에서 &lt;color=#9BBFEA&gt;닭&lt;/color&gt; 잡기</quest_txt>
+		<content>안녕하세요.
+닭 좀 잡아주실수 있나요?</content>
+		<hint_ment>아래로 가보면 닭장이 있을걸세.</hint_ment>
+		<finish_ment>고맙네. 
+사례는 여기있네.</finish_ment>
+		<kind>1</kind>
+		<main>N</main>
+		<repeat>Y</repeat>
+		<prequest>0</prequest>
+		<monster_kind>0</monster_kind>
+		<monster_idx>0</monster_idx>
+		<monster_num>3</monster_num>
+		<reward_money>100</reward_money>
+		<reward_item>1</reward_item>
+		<reward_item_num>2</reward_item_num>
+	</quest>
+	<quest>
+		<quest_idx>3</quest_idx>
+		<npc_idx>1</npc_idx>
+		<quest_txt>&lt;color=#F6ED00&gt;스노우필드&lt;/color&gt;에서 &lt;color=#9BBFEA&gt;늑대&lt;/color&gt; 잡기</quest_txt>
+		<content>안녕하세요.
+닭 좀 잡아주실수 있나요?</content>
+		<hint_ment>스노우필드는 아스카나 마을에서 아래로 가면 있어.</hint_ment>
+		<finish_ment>어려웠을텐데. 
+고맙네.</finish_ment>
+		<kind>1</kind>
+		<main>N</main>
+		<repeat>Y</repeat>
+		<prequest>1</prequest>
+		<monster_kind>0</monster_kind>
+		<monster_idx>1</monster_idx>
+		<monster_num>3</monster_num>
+		<reward_money>100</reward_money>
+		<reward_item>1</reward_item>
+		<reward_item_num>2</reward_item_num>
+	</quest>
+	<quest>
+		<quest_idx>4</quest_idx>
+		<npc_idx>0</npc_idx>
+		<quest_txt>&lt;color=#F6ED00&gt;스노우필드&lt;/color&gt;에서 &lt;color=#9BBFEA&gt;울프 보스&lt;/color&gt; 잡기</quest_txt>
+		<content>스노우필드의 큰 늑대가 저희를 괴롭혀요.
+울프 보스를 잡아주세요.</content>
+		<hint_ment>스노우필드 구석진 곳에 입구가 있을거라네.</hint_ment>
+		<finish_ment>한동안은 평화롭겠어.
+고맙네.</finish_ment>
+		<kind>1</kind>
+		<main>Y</main>
+		<repeat>N</repeat>
+		<prequest>2</prequest>
+		<monster_kind>1</monster_kind>
+		<monster_idx>0</monster_idx>
+		<monster_num>1</monster_num>
+		<reward_money>300</reward_money>
+		<reward_item>0</reward_item>
+		<reward_item_num>10</reward_item_num>
+	</quest>
+</quest>
