@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : BaseBehaviour
 {
-    public GameManager gm;
+
+    public GameManager GameManager;
     public UserPlayerCtrl playerCtrl;
 
     [Header("▶ Status")]
@@ -16,15 +16,12 @@ public class UIManager : MonoBehaviour
     public Image mRunGauge;
 
     [Header("▶ Comment")]
-    // Start is called before the first frame update
-    public Transform comment;
-    private Text commentTxt;
+    [SerializeField] private CommentUI _commentUI;
+    [SerializeField] private CommentTipUI _commentTipUI;
 
-    public Transform commentTip;
-    private Text commentTipTxt;
 
-    private bool isComment = false;
-    private bool isEndComment = false;
+    [Header("▶ TextReader")]
+    [SerializeField] private TextReader _txtReader;
 
     private int interactNPCIdx;
 
@@ -36,13 +33,13 @@ public class UIManager : MonoBehaviour
     public GameObject stuffBuyWindow;
     public GameObject shopNoticeWindow;
     public GameObject maskImg;
-    StuffInfo stuffInCart;
+    private StuffInfo stuffInCart;
     public TextMeshProUGUI myMoneyTxt;
 
     [Header("[ItemDB]")]
     public ItemDataList itmDB;
     public Sprite goldImg;
-    RewardPackage tempReward;
+    private RewardPackage tempReward;
 
     [Header("▶ Quest")]
     public Transform quest;
@@ -65,8 +62,8 @@ public class UIManager : MonoBehaviour
     public Text mMapInfoShadow;
     public Material mMapInfoMaterial;
     private float mapInfoAnimTime = 3.0f;
-    float fadeValue = 0.0f;
-    float appliedTime = 2.0f;
+    private float fadeValue = 0.0f;
+    private float appliedTime = 2.0f;
 
     [Header("▶ Boss Info")]
     public Transform mBossIntroInfo;
@@ -84,12 +81,11 @@ public class UIManager : MonoBehaviour
     public Transform mRewardNoticeContent;
     public GameObject mRewardNoticePrefab;
 
-    [Header("▶ TextReader")]
-    TextReader txtManager;
+
 
     [Header("▶ Skill Window")]
     public Transform mSkillWindow;
-    public SkillContainer[] mSkill;
+    public CSkillContainer[] mSkill;
 
     [Header("▶ Buff Window")]
     public Transform mBuffContainer;
@@ -97,7 +93,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        mMiniMapContainer = transform.GetChild(0).GetComponent<MiniMapContainer>();
         //Skill 리셋
         for (int i = 0; i < mSkill.Length; i++)
         {
@@ -107,23 +102,7 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        commentTxt = comment.transform.GetChild(0).GetComponent<Text>();
-        commentTipTxt = commentTip.transform.GetChild(1).GetComponent<Text>();
-
-        txtManager = this.GetComponent<TextReader>();
-        txtManager.commentTxt = commentTxt;
-        txtManager.nameTxt = comment.GetChild(1).GetChild(0).GetComponent<Text>();
-
-        mMapInfoShadow= mMapInfo.GetChild(0).GetComponent<Text>();
-        mMapInfoText=mMapInfo.GetChild(1).GetComponent<Text>();
-
-        mBossIntroTxtShadow = mBossIntroInfo.GetChild(0).GetComponent<Text>();
-        mBossIntroTxt = mBossIntroInfo.GetChild(1).GetComponent<Text>();
-
-        mBossStateName = mBossStateInfo.GetComponent<Text>();
-
         tempReward = new RewardPackage();
-
     }
 
     // Update is called once per frame
@@ -161,10 +140,10 @@ public class UIManager : MonoBehaviour
     public void addQuestContent()
     {
         GameObject questObj = Instantiate(questFramePrefab, Vector3.zero, Quaternion.identity);
-        questObj.transform.GetChild(0).GetComponent<Text>().text = txtManager.currentCom.QuestDescription;
-        if (txtManager.currentCom.Type.mKind == 1)
+        questObj.transform.GetChild(0).GetComponent<Text>().text = _txtReader.currentCom.QuestDescription;
+        if (_txtReader.currentCom.Type.mKind == 1)
         {
-            questObj.transform.GetChild(1).GetComponent<Text>().text = "(0/"+ txtManager.currentCom.Type.mHuntMonNum.ToString()+")";
+            questObj.transform.GetChild(1).GetComponent<Text>().text = "(0/"+ _txtReader.currentCom.Type.mHuntMonNum.ToString()+")";
         }
 
         questObj.transform.parent = content;
@@ -184,28 +163,26 @@ public class UIManager : MonoBehaviour
 
     public bool GetIsEndComment()
     {
-        return isEndComment;
+        return _commentUI.IsEndComment;
     }
 
     public void startNPCComment(int npcNum,Comment com,int questState)         //움직일 수 있는지 없는지 반환
     {
-        comment.gameObject.SetActive(true);
-        txtManager.startNPCComment(com, questState);
-        isEndComment = true;
+        _txtReader.startNPCComment(com, questState);
+        _commentUI.startNPCComment();
+
     }
 
     public void startNPCComment(int npcNum, ShopComment com, int questState)         //움직일 수 있는지 없는지 반환
     {
-        comment.gameObject.SetActive(true);
+        _txtReader.startNPCComment(com, questState);
+        _commentUI.startNPCComment();
         shopWindow.gameObject.SetActive(true);
-        txtManager.startNPCComment(com, questState);
-        isEndComment = true;
     }
 
     public void endNPCComment()
     {
-        comment.gameObject.SetActive(false);
-        isEndComment = false;               //추후 모든 말이 끝났을때로 변경해야함
+        _commentUI.endNPCComment();           //추후 모든 말이 끝났을때로 변경해야함
     }
 
     void updateMyGold()
@@ -235,9 +212,8 @@ public class UIManager : MonoBehaviour
 
     public void EndOfShop()
     {
-        comment.gameObject.SetActive(false);
+        _commentUI.endNPCComment();
         shopWindow.gameObject.SetActive(false);
-        isEndComment=false;
     }
 
     public void BuyItm(StuffInfo stuff)
@@ -272,15 +248,14 @@ public class UIManager : MonoBehaviour
     public void activeCommentTip(int npcIdx,string npcName)
     {
         interactNPCIdx = npcIdx;
-        commentTipTxt.text = "'" + npcName + "'과(와) 대화하기";
-        commentTip.gameObject.SetActive(true);
+        _commentTipUI.activeCommentTip(npcName);
     }
 
     public void disableCommentTip()
     {
         interactNPCIdx = -1;
-        if (commentTip.gameObject.activeSelf)
-            commentTip.gameObject.SetActive(false);
+        if (_commentTipUI.gameObject.activeSelf)
+            _commentTipUI.gameObject.SetActive(false);
     }
 
     public void ActiveBossState(LivingEntity bossEntity)
@@ -406,92 +381,27 @@ public class UIManager : MonoBehaviour
         }
         yield return null;
     }
-}
 
-[System.Serializable]
-public class SkillContainer
-{
-    public Transform mTransform;
-    public uint mIndex;
-    public Image mSkillImg;
-    public Image mMaskImg;
-    public string keyMapping;
-    public float mRemainTime;
-    public TextMeshProUGUI mRemainTxt;
-    public TextMeshProUGUI mRemainItmNumTxt;
-    public float mReloadTime;
-    public float mMaintainTime;
-    public int mSkillKind;      //0:skill , 1:itm
-    public int mItmIdx;
-
-    public void intialize()
+#if UNITY_EDITOR
+    protected override void OnBindField()
     {
-        mSkillImg = mTransform.GetChild(0).GetComponent<Image>();
-        mMaskImg = mTransform.GetChild(1).GetComponent<Image>();
-        mRemainTxt = mTransform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        keyMapping = mTransform.GetChild(3).GetComponent<TextMeshProUGUI>().text;
-        mRemainItmNumTxt = mTransform.GetChild(4).GetComponent<TextMeshProUGUI>();
+        base.OnBindField();
+        mMiniMapContainer = transform.GetChild(0).GetComponent<MiniMapContainer>();
+
+        _commentUI = GameObject.FindAnyObjectByType<CommentUI>();
+        _commentTipUI = GameObject.FindAnyObjectByType<CommentTipUI>();
+
+        _txtReader = GetComponent<TextReader>();
+        _txtReader.CommentUI = _commentUI;
+
+        mMapInfoShadow = mMapInfo.GetChild(0).GetComponent<Text>();
+        mMapInfoText = mMapInfo.GetChild(1).GetComponent<Text>();
+
+        //mBossIntroTxtShadow = mBossIntroInfo.GetChild(0).GetComponent<Text>();
+        mBossIntroTxt = mBossIntroInfo.GetChild(0).GetComponent<Text>();
+
+        mBossStateName = mBossStateInfo.GetComponent<Text>();
     }
 
-    public void coolTimeReset()
-    {
-        mRemainTime = 0;
-        mMaskImg.fillAmount = 0;
-        mRemainTxt.gameObject.SetActive(false);
-    }
-
-    public void coolTimeReduce(int reduceValue)
-    {
-        if (mRemainTime - reduceValue > 0)
-        {
-            mRemainTime -= reduceValue;
-            mRemainTxt.text = ((int)mRemainTime).ToString();
-            mMaskImg.fillAmount = mRemainTime / mReloadTime;
-        }
-        else coolTimeReset();
-    }
-
-    public void SkillImgReset()
-    {
-        mSkillImg.color = Color.white;
-    }
-
-    public void UseCombo(int comboStack)
-    {
-        if (comboStack == 0)
-            mSkillImg.color = Color.red;
-        else if (comboStack==1)
-            mSkillImg.color = Color.blue;
-    }
-
-    public bool IsUseSkill() { return mRemainTime == 0; }
-
-    public bool UseSkill()
-    {
-        mRemainTime = mReloadTime;
-        mRemainTxt.text = mRemainTime.ToString();
-        mRemainTxt.gameObject.SetActive(true);
-        mMaskImg.fillAmount = 1;
-        return (mMaintainTime > 0);
-    }
-
-    public void updateSkillContainer()
-    {
-        if (mRemainTime > 0)
-        {
-            mRemainTime -= Time.deltaTime;
-            mRemainTxt.text = ((int)mRemainTime).ToString();
-            mMaskImg.fillAmount -= 1 / mReloadTime * Time.deltaTime;
-        }
-        else
-        {
-            coolTimeReset();
-        }
-    }
-
-    public void UpdateItmNum(InGameItem itm)
-    {
-        mRemainItmNumTxt.text = (itm.count).ToString();
-    }
-
+#endif
 }

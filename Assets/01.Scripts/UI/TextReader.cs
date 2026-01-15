@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class TextReader : MonoBehaviour
 {
-    public Text commentTxt;
-    public Text nameTxt;
+    public CommentUI CommentUI;
 
     private int pageNum = 0;
     private int pageCount = 10;
@@ -25,24 +24,6 @@ public class TextReader : MonoBehaviour
 
     public Comment currentCom;
     ShopComment currentShopCom;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        //com = new Comment[2];
-        //com[0].NPCName = "길가는 행인";
-        //com[0].NPCDescription = "안녕하세요. \n나 좀 도와주십시오. \n냇가에서 닭 3마리만 잡아주시오.";
-        //com[0].Type = new HuntQuest("닭", "잡기", 0, 3, new Vector3(-4.74f, 0, -4.59f), "아스카나 냇가");
-        //com[0].QuestDescription = "<color=#F6ED00>" + com[0].Type.fieldName + "</color> 에서 <color=#9BBFEA>" + com[0].Type.mName + "</color> " + com[0].Type.mDescription;
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     //대화창 시작
     //eventNum : 이벤트 id
@@ -63,12 +44,12 @@ public class TextReader : MonoBehaviour
             {
                 if (eventNum == 0)
                 {
-                    commentTxt.text = tutorialTxt[pageNum];
+                    CommentUI.CommentTxt.text = tutorialTxt[pageNum];
                 }
                 else if (eventNum == 1)
                 {
 
-                    commentTxt.text = tutorialTxt2[pageNum];
+                    CommentUI.CommentTxt.text = tutorialTxt2[pageNum];
                 }
                 StopCoroutine("textReadEvent");
                 isTyping = false;
@@ -89,13 +70,13 @@ public class TextReader : MonoBehaviour
 
     private void endParagraph()
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         contextNum = 0;
     }
 
     private void endComment()
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         contextNum = 0;
         //uiCommentObj.SetActive(false);
         //GameManager.Instance.switchComment(false);
@@ -123,11 +104,11 @@ public class TextReader : MonoBehaviour
         {
             if (eventNum == 0)
             {
-                commentTxt.text += tutorialTxt[pageNum][contextNum];
+                CommentUI.CommentTxt.text += tutorialTxt[pageNum][contextNum];
             }
             else if (eventNum == 1)
             {
-                commentTxt.text += tutorialTxt2[pageNum][contextNum];
+                CommentUI.CommentTxt.text += tutorialTxt2[pageNum][contextNum];
             }
             contextNum++;
             yield return new WaitForSeconds(0.08f);
@@ -140,9 +121,9 @@ public class TextReader : MonoBehaviour
 
     public void startNPCComment(Comment com,int questState)
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         currentCom = com;
-        nameTxt.text = currentCom.NPCName;
+        CommentUI.NameTxt.text = currentCom.NPCName;
         isTyping = false;
         commentNum = 0;
         StartCoroutine("textReadComment", questState);
@@ -150,9 +131,9 @@ public class TextReader : MonoBehaviour
 
     public void startNPCComment(ShopComment com, int shopKind)
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         currentShopCom = com;
-        nameTxt.text = currentShopCom.NPCName;
+        CommentUI.NameTxt.text = currentShopCom.NPCName;
         isTyping = false;
         commentNum = 0;
         StartCoroutine("textReadShopComment");
@@ -160,7 +141,7 @@ public class TextReader : MonoBehaviour
 
     public void endNPCComment()
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         contextNum = 0;
         //uiCommentObj.SetActive(false);
         //GameManager.Instance.switchComment(false);
@@ -172,7 +153,7 @@ public class TextReader : MonoBehaviour
 
     public void endShopNPCComment()
     {
-        commentTxt.text = "";
+        CommentUI.CommentTxt.text = "";
         contextNum = 0;
         pageNum = 0;
 
@@ -195,7 +176,7 @@ public class TextReader : MonoBehaviour
         commentCount = npcComment.Length;
         while (commentCount > commentNum)
         {
-            commentTxt.text += npcComment[commentNum];
+            CommentUI.CommentTxt.text += npcComment[commentNum];
 
             commentNum++;
             yield return new WaitForSeconds(0.08f);
@@ -214,7 +195,7 @@ public class TextReader : MonoBehaviour
         commentCount = npcComment.Length;
         while (commentCount > commentNum)
         {
-            commentTxt.text += npcComment[commentNum];
+            CommentUI.CommentTxt.text += npcComment[commentNum];
 
             commentNum++;
             yield return new WaitForSeconds(0.08f);

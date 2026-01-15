@@ -7,14 +7,14 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseBehaviour
 {
     // Start is called before the first frame update
     public PlayerCamera playerCam;
     public UserPlayerCtrl mPlayer;
     private LivingEntity mPlayerEntity;
-    UIManager uiM;
-    NPCManager npcM;
+    [SerializeField] private UIManager _uiManager;
+    [SerializeField] private NPCManager _npcManager;
 
     [Header("World Time")]
     float mWorldClock=50f;
@@ -29,10 +29,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        npcM = this.transform.GetChild(0).GetComponent<NPCManager>();
-        uiM = this.transform.GetChild(1).GetComponent<UIManager>();
+        
         mPlayerEntity = mPlayer.GetComponent<LivingEntity>();
-        mPlayer.settingOfManager(uiM);
+        mPlayer.settingOfManager(_uiManager);
         audioSrc = this.GetComponent<AudioSource>();
         audioSrc.clip = bgms[0];
         audioSrc.Play();
@@ -47,56 +46,56 @@ public class GameManager : MonoBehaviour
             //Sun.transform.rotation = Quaternion.Euler(mWorldClock,-100,0);
             //if (mWorldClock <= 0) mWorldClock = 180;
 
-            uiM.UpdateRunGuage(mPlayer.getFastRunGage());
-            uiM.UpdateHPGuage(mPlayer.getHPGage());
+            _uiManager.UpdateRunGuage(mPlayer.getFastRunGage());
+            _uiManager.UpdateHPGuage(mPlayer.getHPGage());
 
             if (Input.GetKeyDown(KeyCode.F))
             {
                 if (mPlayer.getInteractMode() == 1 || mPlayer.getInteractMode() == 2)
                 {
-                    mPlayer.bIsMove = uiM.GetIsEndComment();
+                    mPlayer.bIsMove = _uiManager.GetIsEndComment();
                     int interactNPCID = mPlayer.interactNPCID;
 
                     if (mPlayer.getInteractMode() == 1 && !mPlayer.bIsMove)
                     {
-                        uiM.disableCommentTip();
+                        _uiManager.disableCommentTip();
                         if (mPlayer.InteractNPCKind == 0)
                         {
                             mPlayer.setInteractMode(2);
-                            uiM.startNPCComment(interactNPCID, npcM.GetComment(interactNPCID), npcM.GetQuestState(interactNPCID));
-                            mPlayer.mCam.setCameraMode(1, npcM.getNPCTrans(mPlayer.interactNPCID));
+                            _uiManager.startNPCComment(interactNPCID, _npcManager.GetComment(interactNPCID), _npcManager.GetQuestState(interactNPCID));
+                            mPlayer.mCam.setCameraMode(1, _npcManager.getNPCTrans(mPlayer.interactNPCID));
                         }
                         else
                         {
                             mPlayer.setInteractMode(3);
-                            uiM.startNPCComment(interactNPCID, npcM.GetShopComment(interactNPCID), npcM.GetShopKind(interactNPCID));
-                            uiM.StartOfShop(npcM.getShopNPCCon(interactNPCID));
-                            mPlayer.mCam.setCameraMode(1, npcM.getShopNPCTrans(mPlayer.interactNPCID));
+                            _uiManager.startNPCComment(interactNPCID, _npcManager.GetShopComment(interactNPCID), _npcManager.GetShopKind(interactNPCID));
+                            _uiManager.StartOfShop(_npcManager.getShopNPCCon(interactNPCID));
+                            mPlayer.mCam.setCameraMode(1, _npcManager.getShopNPCTrans(mPlayer.interactNPCID));
                         }
 
-                        npcM.InteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
+                        _npcManager.InteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
                         mPlayer.RemoveOutLineMaterials();
                     }
                     else if (mPlayer.bIsMove)
                     {
                         mPlayer.setInteractMode(0);
                         mPlayer.mCam.setCameraMode(0, mPlayer.transform.GetChild(1));
-                        npcM.UninteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
-                        if (npcM.GetQuestState(interactNPCID)==2)
+                        _npcManager.UninteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
+                        if (_npcManager.GetQuestState(interactNPCID)==2)
                         {
-                            int questIdx = getQuestIndex(npcM.GetQuestIdxWithNPCID(interactNPCID));
-                            uiM.removeQuestContent(questIdx);
-                            mPlayer.UnpackReward(npcM.GiveReward(interactNPCID));         //보상 지급
+                            int questIdx = getQuestIndex(_npcManager.GetQuestIdxWithNPCID(interactNPCID));
+                            _uiManager.removeQuestContent(questIdx);
+                            mPlayer.UnpackReward(_npcManager.GiveReward(interactNPCID));         //보상 지급
                             questList.RemoveAt(questIdx);
                             //퀘스트가 또 있는지 확인
                         }
-                        else if(npcM.GetQuestState(interactNPCID) == 0)
+                        else if(_npcManager.GetQuestState(interactNPCID) == 0)
                         {
-                            questList.Add(npcM.acceptQuest(mPlayer.interactNPCID));
-                            uiM.addQuestContent();
+                            questList.Add(_npcManager.acceptQuest(mPlayer.interactNPCID));
+                            _uiManager.addQuestContent();
                         }
 
-                        uiM.endNPCComment();
+                        _uiManager.endNPCComment();
                     }
                 }
             }
@@ -106,8 +105,8 @@ public class GameManager : MonoBehaviour
                 {
                     mPlayer.setInteractMode(0);
                     mPlayer.mCam.setCameraMode(0, mPlayer.transform.GetChild(1));
-                    npcM.UninteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
-                    uiM.EndOfShop();
+                    _npcManager.UninteractiveWithPlayer(mPlayer.interactNPCID, mPlayer.transform.position, mPlayer.InteractNPCKind);
+                    _uiManager.EndOfShop();
                 }
             }
         }
@@ -136,8 +135,8 @@ public class GameManager : MonoBehaviour
             {
                 HuntQuest hunt = (HuntQuest)questList[i];
                 hunt.UpdateMonNum();
-                uiM.UpdateQuestState(i,hunt.mHuntedNum, hunt.mHuntMonNum, hunt.CheckConstraint());
-                if (hunt.CheckConstraint()) { npcM.completeQuest(i,hunt.mNPCID); }
+                _uiManager.UpdateQuestState(i,hunt.mHuntedNum, hunt.mHuntMonNum, hunt.CheckConstraint());
+                if (hunt.CheckConstraint()) { _npcManager.completeQuest(i,hunt.mNPCID); }
             }
         }
     }
@@ -163,4 +162,15 @@ public class GameManager : MonoBehaviour
         if (play) { audioSrc.Play(); }
         else { audioSrc.Stop(); }
     }
+
+#if UNITY_EDITOR
+
+    protected override void OnBindField()
+    {
+        base.OnBindField();
+        _npcManager = FindAnyObjectByType<NPCManager>();
+        _uiManager = FindAnyObjectByType<UIManager>();
+    }
+
+#endif
 }

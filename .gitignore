@@ -70,3 +70,40 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# external resources
+10.Models/
+11.Animation/
+12.Images/
+13.Effects/
+14.Fonts/
+15.Sounds/
+99.DownloadAssets/
+Hovl Studio/
+JMO Assets/
+Malbers Animations/
+Piloto Studio/
+PolygonAdventure/
+CaptainCatSparrow/
+GUI_Parts/
+RGP icons free start pack/
+RPG_inventory_icons/
+
+10.Models.meta
+11.Animation.meta
+12.Images.meta
+13.Effects.meta
+14.Fonts.meta
+15.Sounds.meta
+99.DownloadAssets.meta
+Hovl Studio.meta
+JMO Assets.meta
+Malbers Animations.meta
+Piloto Studio.meta
+PolygonAdventure.meta
+CaptainCatSparrow.meta
+GUI_Parts.meta
+RGP icons free start pack.meta
+RPG_inventory_icons.meta
+.editorconfig
